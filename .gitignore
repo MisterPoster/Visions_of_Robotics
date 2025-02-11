@@ -1,0 +1,9 @@
+#vscode
+settings.json
+
+# Compiled source objects
+*.o
+
+# Any executables we build
+calib
+utilsTest
