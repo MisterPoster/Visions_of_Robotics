@@ -1,5 +1,5 @@
 // Homework 1, Robotics 444
-// By: Andrew Gallimore
+// By: Andrew Gallimore and Ben Kanter
 
 #include <stdio.h>
 #include <cmath>
@@ -22,28 +22,12 @@ void vectorScale(float* u, int rows, float scalar, float* result) {
 }
 
 void vectorNorm(float* a, int rows) {
-  // Getting magnitude of vector
-  float mag = 0.0;
-  for (int c = 0; c < rows; c++) {
-    mag += pow(a[c], 2);
-  }
-  mag = sqrt(mag);
-
-  // Dividing each element by the magnitude
-  for(int i=0; i<rows; i++) {
-    a[i] = a[i] / mag;
-  }
+  // scale by 1 over magnitude to normalize
+  vectorScale(a, rows, (1 / vectorMag(a, rows)), a);
 }
 float vectorMag(float* a, int rows) {
-  // Getting magnitude of vector
-  float mag = 0.0;
-  for (int c = 0; c < rows; c++) {
-    mag += pow(a[c], 2);
-  }
-  mag = sqrt(mag);
-
-  // And returning it
-  return mag;
+  // the sqrt of a dotted with itself is the magnitude
+  return sqrt(vectorDotProduct(a, a, rows));
 }
 
 void vectorAdd(float* result, float* a, float* b, int rows) {
@@ -64,7 +48,7 @@ void vectorSub(float* result, float* a, float* b, int rows) {
 float vectorDotProduct(float* a, float* b, int rows) {
   float dot = 0.0;
 
-  // Caclulating the dot product by multiplying each element in the vectors, then suming
+  // Calculating the dot product by multiplying each element in the vectors, then suming
   for (int c = 0; c < rows; c++) {
     dot += (a[c] * b[c]);
   }

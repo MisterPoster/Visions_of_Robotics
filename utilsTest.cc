@@ -42,7 +42,8 @@ int main ()
     printf("Printing vector a normalized:\n");
     vectorNorm(a, rows);
     vectorPrint(a, rows);
-    printf("\n");
+
+    printf("Printing the magnitude of vector a normalized (should be 1):\n\n    %.2f\n\n", vectorMag(a, rows));
 
     // Testing addition
     float e[] = {0,0,0};
