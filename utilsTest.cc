@@ -1,93 +1,58 @@
-// Homework 1, Robotics 444
-// By: Andrew Gallimore
-
-#include "vectorUtils.h"
-#include "matrixUtils.h"
+#include <fstream>
+#include <iostream>
+#include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+#include <time.h>
+#include <ctime>
+#include <string>
+#include <sstream>
+#include "utils.h"
+
+#include <iomanip>
 
 using namespace std;
 
 int main () 
 {
-    float a[] = { 1, 2, 3 };
-    float b[] = { 9, 1, 4 };
-    float c[] = {-7, 3, 4 };
+    float u[] = { 1, 2, 3 };
+
+    float v[] = { 4, 5, 6 }; // 2 4 6
+
+    float x[] = { 9, 1, 4 };
 
     int rows = 3;
-    float scalar = 2.0;
 
-    printf("====== Testing vector functions ======\n\n");
+    float alpha = 2.0;
     
-    // Print initial values
-    printf("Printing vector a:\n");
-    vectorPrint(a, rows);
-    printf("Printing vector b:\n");
-    vectorPrint(b, rows);
-    printf("Printing vector c:\n");
-    vectorPrint(c, rows);
+    printf ("Printing u\n");
+    vectorPrint (u, rows);
 
-    // Testing scaling
-    float d[] = { 0, 0, 0 };
-    printf ("Printing the vector a scaled by 2:\n");
-    vectorScale(a, rows, scalar, d);
-    vectorPrint(d, rows);
+    printf ("Printing the vector scaling of u\n");
+    vectorScale (u, rows, alpha, v);
+    vectorPrint (v, rows);
 
-    // Testing magnitude
-    printf("Printing the magnitude of vector a:\n");
-    printf("\n");
-    printf("    %.2f\n", vectorMag(a, rows));
-    printf("\n");
+    printf ("Printing the mag of u\n");
+    printf ("%.2f", vectorNorm (u, rows));
+    vectorPrint (u, rows);
+    printf ("\n\n");
+	
+    printf ("Printing the mag of v\n");
+    printf ("%.2f", vectorNorm (v, rows));
+    vectorPrint (v, rows);
+    printf ("\n\n");
 
-    // Testing normalization
-    printf("Printing vector a normalized:\n");
-    vectorNorm(a, rows);
-    vectorPrint(a, rows);
-    printf("\n");
+    float y [] = {0,0,0};
+    printf ("Printing the sum of v and x\n");
+    vectorAdd (y, v, x, rows);
+    printf ("\n\n");
 
-    // Testing addition
-    float e[] = {0,0,0};
-    printf("Printing vector b and c added:\n");
-    vectorAdd(e, b, c, rows);
-    vectorPrint(e, rows);
+    float z [rows];
+    printf ("Printing the difference of u and x\n");
+    vectorSub (z, u, x, rows); 
+    printf ("\n");
 
-    // Testing subtraction
-    float f[] = {0,0,0};
-    printf("Printing vector b and c subtracted:\n");
-    vectorSub(f, b, c, rows); 
-    vectorPrint(f, rows);
+    printf ("Printing the dot between u and x\n");
+    printf ("%.0f\n", dotProduct (u, x, rows));
 
-    // Testing dot product
-    printf("Printing the dot of b on c:\n\n");
-    printf("  %.2f\n", vectorDotProduct(b, c, rows));
-    printf("\n");
-
-    printf("====== Testing Matrix functions ======\n\n");
-
-    float matrixA[] = { 1, 2, 3,
-                        4, 5, 6,
-                        7, 8, 9 };
-    float matrixB[9];
-    float matrixQ[9];
-    float matrixR[9];
-
-    int rowsA = 3;
-    int colsA = 3;
-
-    printf("Printing matrix A:\n");
-    matrixPrint(matrixA, rowsA, colsA);
-
-    printf("Printing matrix A transposed:\n");
-    matrixTranspose(matrixA, rowsA, colsA, matrixB);
-    matrixPrint(matrixB, colsA, rowsA);
-
-    printf("Printing matrix Q and R of A QR decomposed :\n");
-    matrixQRDecomposision(matrixA, rowsA, colsA, matrixQ, matrixR);
-    matrixPrint(matrixQ, rowsA, colsA);
-    matrixPrint(matrixR, rowsA, colsA);
-
-    printf("Printing the product of Q and R (should be A):\n");
-    float matrixC[9];
-    matrixProduct(matrixQ, rowsA, colsA, matrixR, rowsA, colsA, matrixC);
-    matrixPrint(matrixC, rowsA, colsA);
-    
 }
