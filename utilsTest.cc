@@ -82,7 +82,7 @@ int main ()
     matrixPrint(matrixB, colsA, rowsA);
 
     printf("Printing matrix Q and R of A QR decomposed :\n");
-    matrixQRDecomposision(matrixA, rowsA, colsA, matrixQ, matrixR);
+    matrixQR(matrixA, rowsA, colsA, matrixQ, matrixR);
     matrixPrint(matrixQ, rowsA, colsA);
     matrixPrint(matrixR, rowsA, colsA);
 
