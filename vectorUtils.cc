@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <cmath>
-#include "utils.h"
+#include "vectorUtils.h"
 
 using namespace std;
 
@@ -34,6 +34,17 @@ void vectorNorm(float* a, int rows) {
     a[i] = a[i] / mag;
   }
 }
+float vectorMag(float* a, int rows) {
+  // Getting magnitude of vector
+  float mag = 0.0;
+  for (int c = 0; c < rows; c++) {
+    mag += pow(a[c], 2);
+  }
+  mag = sqrt(mag);
+
+  // And returning it
+  return mag;
+}
 
 void vectorAdd(float* result, float* a, float* b, int rows) {
   // Adding each element in the vectors
@@ -48,6 +59,7 @@ void vectorSub(float* result, float* a, float* b, int rows) {
     result[c] = a[c] - b[c];
   }
 }
+
 
 float vectorDotProduct(float* a, float* b, int rows) {
   float dot = 0.0;
