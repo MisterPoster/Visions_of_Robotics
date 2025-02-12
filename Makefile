@@ -5,9 +5,9 @@ CC = g++
 CFLAGS = -Wall
 
 # Source files for different targets
-TEST_SRCS = utilsTest.cc utils.cc
-QR_SRCS = qrDecomp.cc utils.cc matrixUtils.cc
-CALIB_SRCS = calib.cc readParams.cc readData.cc utils.cc
+TEST_SRCS = utilsTest.cc vectorUtils.cc matrixUtils.cc
+QR_SRCS = qrDecomp.cc vectorUtils.cc matrixUtils.cc
+CALIB_SRCS = calib.cc readParams.cc readData.cc vectorUtils.cc
 
 # Object files (replace .cc with .o)
 TEST_OBJS = $(TEST_SRCS:.cc=.o)
@@ -15,8 +15,8 @@ QR_OBJS = $(QR_SRCS:.cc=.o)
 CALIB_OBJS = $(CALIB_SRCS:.cc=.o)
 
 # Output executables
-TEST_TARGET = utilsTest
-QR_TARGET = qrDecomp
+TEST_TARGET = tests
+QR_TARGET = qr
 CALIB_TARGET = calib
 
 # Generic rule to build the final executable
@@ -53,11 +53,11 @@ run_calib: run
 
 
 # ==== To run the tests ====
-# make utilsTest	// build
+# make tests		// build
 # make run_tests	// build + run
 
 # ==== To run the QR decomposition ====
-# make qrDecomp		// build
+# make qr			// build
 # make run_qr		// build + run
 
 # ==== To run the calibration ====
