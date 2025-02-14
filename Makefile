@@ -7,7 +7,7 @@ CFLAGS = -Wall
 # Source files for different targets
 TEST_SRCS = utilsTest.cc vectorUtils.cc matrixUtils.cc
 QR_SRCS = qrDecomp.cc vectorUtils.cc matrixUtils.cc
-CALIB_SRCS = calib.cc readParams.cc readData.cc vectorUtils.cc
+CALIB_SRCS = calib.cc readParams.cc readData.cc vectorUtils.cc matrixUtils.cc
 
 # Object files (replace .cc with .o)
 TEST_OBJS = $(TEST_SRCS:.cc=.o)
