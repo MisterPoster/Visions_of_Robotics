@@ -10,45 +10,47 @@
 #include "readParams.h"
 #include "readData.h"
 #include "matrixUtils.h"
+#include "vectorUtils.h"
 
 using namespace std;
 
-int main(){
+int main()
+{
+   int numPoints = 0;
+   string inputFile;
 
-int numPoints = 0;
-string inputFile;
+   cout << "Enter the name of the calibration file: ";
+           getline(std::cin, inputFile); // Read a line
 
-cout << "Enter the name of the calibration file: ";
-    getline(std::cin, inputFile); // Read a line
+   numPoints = readParams(inputFile);
 
-numPoints = readParams(inputFile);
+   printf( "Number of Points %d \n",numPoints);
 
-printf( "Number of Points %d \n",numPoints);
-
-if(numPoints<12){
+   if(numPoints<12)
+   {
 	printf("Not enough points. Min of 12 are needed \n");
 	exit(0);
-}
+   }
 
-int rows = numPoints;
-int cols = 12;
+   int rows = numPoints;
+   int cols = 12;
 
-float   u[rows];
-float   v[rows];
-float   x[rows];
-float   y[rows];
-float   z[rows];
-float  zc[rows];
+   float   u[rows];
+   float   v[rows];
+   float   x[rows];
+   float   y[rows];
+   float   z[rows];
+   float  zc[rows];
 
-readData(inputFile, u, v, x ,y, z, zc);
+   readData(inputFile, u, v, x ,y, z, zc);
 
    int Msize = numPoints * 3 * cols;
    float M[Msize];
    int arr_counter = 0;
    int ptr_tracker = -1;
 
-   for(int i = 0; i < numPoints * 3; i++) {
-
+   for(int i = 0; i < numPoints * 3; i++) 
+   {
       if (i % 3 == 0) { ptr_tracker++; }
 
       for (int j = 0; j < cols; j++)
@@ -88,42 +90,72 @@ readData(inputFile, u, v, x ,y, z, zc);
       }
    }
 
+   // --- M Transpose Creation ---
    float Mtrans[Msize];
 
    matrixPrint(M, 3 * numPoints, cols);
    matrixTranspose(M, 3 * numPoints, cols, Mtrans);
    matrixPrint(Mtrans, cols, 3 * numPoints);
+
+   // --- M_T * M = A ---
    float A[12 * 12] = {0};
-   matrixPrint(A, cols, cols);
 
    matrixProduct(Mtrans, cols, numPoints * 3, M, numPoints * 3, cols, A);
-
+   printf ("A MATRIX\n");
    matrixPrint(A, cols, cols);
    
-   float Q[cols * cols] = {0};
-   float R[cols * cols] = {0};
+   // --- QR Decomposition of A ---
+   float Q [cols * cols];
+   float R [cols * cols];
    
    matrixQR(A, cols, cols, Q, R);
- 
+   printf ("Q MATRIX\n");
    matrixPrint(Q, cols, cols);
+   printf ("R MATRIX\n");
    matrixPrint(R, cols, cols);
 
-   float Qt [cols * cols] = {0};
+
+   // --- Q * Q_T = I ---
+   float Qt [cols * cols];
    matrixTranspose (Q, cols, cols, Qt);
 
-   float Qi [cols * cols] = {0};
+   float Qi [cols * cols];
    matrixProduct (Q, cols, cols, Qt, cols, cols, Qi);
    matrixPrint (Qi, cols, cols);
 
-
+   // --- Making vector b ---
+   int row_b = 0;
+   float c [rows];
+   float b [cols];
+   for (int i = 0; i < numPoints; i++)
+   {
+      c [row_b] = (u [i] * zc [i]);
+      row_b++;
+      c [row_b] = (v [i] * zc [i]);
+      row_b++;
+      c [row_b] = (zc [i]);
+      row_b++;
+   }
    
+   matrixTimesVector (Mtrans, cols, rows, c, rows, b);
+   printf ("b = mT*c should be \n");
+   vectorPrint (b, cols);
+   
+   // --- Making vector d = Qt * b ---
+   float d [cols];
+   matrixTimesVector (Qt, cols, cols, b, cols, d);
 
+   // --- Back substitution --- 
+   float p [cols];
+   matrixBackSubstitution (R, cols, cols, d, p);
+   printf ("Projection Matrix \n");
+   matrixPrint (p, 3, 4);   
 
-
-   float cam [9] = {0};
-   matrixInternalCameraParameters (A, cols, cols, cam);
-
-   // matrixPrint (cam, 3, 3);
+   // --- Calibration Matrix k ---
+   float k [9] = {0};
+   matrixInternalCameraParameters (p, 3, 4, k);
+   printf ("CALIB MATRIX \n");
+   matrixPrint (k, 3, 3);
 
    return 0;
 
