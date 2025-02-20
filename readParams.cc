@@ -11,36 +11,30 @@
 using namespace std;
 
 int readParams (string fileName) {
+	// Declaring variables
+	ifstream infile;
+	string line;
+	int value;
+	int numPoints;
 
+	// Open file
+	infile.open (fileName);
 
-ifstream infile;
-string line;
-int value;
-int imageWidth,imageHeight,numPoints;
-float zc;
+	// Read first line to get image parameters
+	getline(infile,line); // Saves the line in STRING.
 
-//open file
-infile.open (fileName);
+	istringstream iss(line);
 
-//read first line to get image parameters
-getline(infile,line); // Saves the line in STRING.
+	value=0;
+	do {
+		string sub;
+		iss >> sub;
+		if(value==2) numPoints = atoi(sub.c_str());
 
-istringstream iss(line);
+		value++;
+	} while(iss);
 
-value=0;
-do{
-	string sub;
-	iss >> sub;
-	if(value==0) imageWidth		=   atoi(sub.c_str());
-	if(value==1) imageHeight	=   atoi(sub.c_str());	
-        if(value==2) numPoints      	=   atoi(sub.c_str());
+	infile.close();
 
-value++;
-	
-}while(iss);
-
-
-infile.close ();
-
-return numPoints;
+	return numPoints;
 }
