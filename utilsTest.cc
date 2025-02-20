@@ -67,9 +67,9 @@ int main ()
     float matrixA[] = { 1, 2, 3,
                         4, 5, 6,
                         7, 8, 9 };
-    float matrixB[9];
-    float matrixQ[9];
-    float matrixR[9];
+    float matrixB[9] = {0};
+    float matrixQ[9] = {0};
+    float matrixR[9] = {0};
 
     int rowsA = 3;
     int colsA = 3;
@@ -87,7 +87,7 @@ int main ()
     matrixPrint(matrixR, rowsA, colsA);
 
     printf("Printing the product of Q and R (should be A):\n");
-    float matrixC[9];
+    float matrixC[9] = {0};
     matrixProduct(matrixQ, rowsA, colsA, matrixR, rowsA, colsA, matrixC);
     matrixPrint(matrixC, rowsA, colsA);
     
