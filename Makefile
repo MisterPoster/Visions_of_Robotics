@@ -54,13 +54,9 @@ run_calib: run
 
 # ==== To run the tests ====
 # make tests		// build
-# make run_tests	// build + run
-
-# ==== To run the QR decomposition ====
-# make qr			// build
-# make run_qr		// build + run
+# make run_tests	// run
 
 # ==== To run the calibration ====
 # make calib		// build
-# make run_calib	// build + run
+# make run_calib	// run
 
