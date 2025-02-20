@@ -7,41 +7,39 @@
 #include <ctime>
 #include <string>
 #include <sstream>
-#include "readParams.h"
-#include "readData.h"
+#include "calibFile.h"
 #include "matrixUtils.h"
 #include "vectorUtils.h"
 
 using namespace std;
 
 int main() {
-   int numPoints = 0;
-   string inputFile;
-
+   
    // Getting name of file
    cout << "Enter the name of the calibration file: ";
-   getline(std::cin, inputFile); // Read a line
+   string inputFile;
+   getline(std::cin, inputFile); // Read file name from user
 
-   // Reading the number of points
-   numPoints = readParams(inputFile);
+   // Instantiate the calibFile class and read data
+   calibFile calib(inputFile);
+
+   // Get the number of points
+   int numPoints = calib.getNumPoints();
    printf("Number of Points %d \n", numPoints);
 
    // Early return if not enough points
-   if(numPoints < 12) {
-      printf("Not enough points. Min of 12 are needed \n");
-      exit(0);
+   if (numPoints < 12) {
+       printf("Not enough points. Min of 12 are needed \n");
+       exit(0);
    }
 
-   // Define input vectors
-   float   u[numPoints];
-   float   v[numPoints];
-   float   x[numPoints];
-   float   y[numPoints];
-   float   z[numPoints];
-   float  zc[numPoints];
-   
-   // Reading the data
-   readData(inputFile, u, v, x ,y, z, zc);
+   // Define input vectors using getters
+   const float* u = calib.getU();
+   const float* v = calib.getV();
+   const float* x = calib.getX();
+   const float* y = calib.getY();
+   const float* z = calib.getZ();
+   const float* zc = calib.getZc();
    
    // The size of the M and M-transpose matrix's
    int rows = 3 * numPoints;
